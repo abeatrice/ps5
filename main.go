@@ -23,8 +23,8 @@ type AvilableToPromiseNetwork struct {
 
 func main() {
 	// target ps5 product id 81114595
-	// junk 77362757
-	res, err := http.Get("https://redsky.target.com/v3/pdp/tcin/81114595?excludes=awesome_shop,question_answer_statistics,item,taxonomy,bulk_ship,rating_and_review_reviews,rating_and_review_statistics&key=eb2551e4accc14f38cc42d32fbc2b2ea")
+	// junk 80208042
+	res, err := http.Get("https://redsky.target.com/v3/pdp/tcin/80208042?excludes=awesome_shop,question_answer_statistics,item,taxonomy,bulk_ship,rating_and_review_reviews,rating_and_review_statistics&key=eb2551e4accc14f38cc42d32fbc2b2ea")
 	check(err)
 
 	body, err := ioutil.ReadAll(res.Body)
@@ -39,6 +39,8 @@ func main() {
 	}
 
 	res.Body.Close()
+
+	fmt.Println("DONE")
 }
 
 func check(err error) {
