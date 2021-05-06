@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	browser "github.com/EDDYCJY/fake-useragent"
@@ -29,13 +30,21 @@ type AvilableToPromiseNetwork struct {
 	AvilableToPromiseQuantity float32 `json:"available_to_promise_quantity"`
 }
 
+var wg sync.WaitGroup
+
 func main() {
-	checkBestBuy()
-	checkTarget()
+	wg.Add(2)
+
+	go checkBestBuy()
+	go checkTarget()
+
+	wg.Wait()
 	fmt.Printf("[%s] Done Checking PS5 Stock\n", time.Now().Format("2006-01-02 15:04:05"))
 }
 
 func checkBestBuy() {
+	defer wg.Done()
+
 	url := "https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
 
 	client := &http.Client{}
@@ -63,6 +72,8 @@ func checkBestBuy() {
 }
 
 func checkTarget() {
+	defer wg.Done()
+
 	// target ps5 product id 81114595
 	// junk 80208042
 	res, err := http.Get("https://redsky.target.com/v3/pdp/tcin/81114595?excludes=awesome_shop,question_answer_statistics,item,taxonomy,bulk_ship,rating_and_review_reviews,rating_and_review_statistics&key=eb2551e4accc14f38cc42d32fbc2b2ea")
